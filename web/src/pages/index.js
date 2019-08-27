@@ -119,18 +119,19 @@ const IndexPage = props => {
       <SEO title={site.title} description={site.description} keywords={site.keywords} />
       <Container>
         <h1 hidden>Welcome to {site.title}</h1>
+        <p>{site.description || 'No description provided yet...'}</p>
         {projectNodes && (
           <ProjectPreviewGrid
-            title='Latest projects'
+            title="Latest projects"
             nodes={projectNodes}
-            browseMoreHref='/projects/'
+            browseMoreHref="/projects/"
           />
         )}
         {postNodes && (
           <BlogPostPreviewGrid
-            title='Latest blog posts'
+            title="Latest blog posts"
             nodes={postNodes}
-            browseMoreHref='/blog/'
+            browseMoreHref="/blog/"
           />
         )}
       </Container>
