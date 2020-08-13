@@ -12,9 +12,11 @@ import IframePreview from "./components/previews/iframe/IframePreview";
 import SeoPreview from "./components/previews/seo/SeoPreviews";
 
 const remoteURL =
-  process.env.REMOTE_URL || "https://gatsby-portfolio-preview-poc-4165823465.gtsb.io";
+  process.env.REMOTE_URL || "https://8000-a7bf75be-1057-4e59-b443-4432977f56d9.ws-us02.gitpod.io";
 const localURL = "http://localhost:8000";
-const previewURL = window.location.hostname === "localhost" ? localURL : remoteURL;
+// let previewURL = window.location.hostname === "localhost" && false ? localURL : remoteURL;
+// previewURL = "https://example-web-combo-preview.onrender.com";
+let previewURL = process.env.PREVIEW_URL || "https://example-web-combo-preview.onrender.com";
 console.log("previewURL", previewURL);
 
 const hiddenTypes = [
@@ -24,7 +26,7 @@ const hiddenTypes = [
   "person",
   "post",
   "project",
-  "siteSettings"
+  "siteSettings",
 ];
 
 const webriq = S.list()
@@ -32,21 +34,11 @@ const webriq = S.list()
   .items([
     S.listItem()
       .title("Site Settings")
-      .child(
-        S.editor()
-          .id("siteSettings")
-          .schemaType("siteSettings")
-          .documentId("siteSettings")
-      )
+      .child(S.editor().id("siteSettings").schemaType("siteSettings").documentId("siteSettings"))
       .icon(MdSettings),
     S.listItem()
       .title("Company Info")
-      .child(
-        S.editor()
-          .id("companyInfo")
-          .schemaType("companyInfo")
-          .documentId("companyInfo")
-      )
+      .child(S.editor().id("companyInfo").schemaType("companyInfo").documentId("companyInfo"))
       .icon(MdBusiness),
     S.listItem()
       .title("Projects")
@@ -54,7 +46,7 @@ const webriq = S.list()
       .child(
         S.documentTypeList("project")
           .title("Projects")
-          .child(documentId =>
+          .child((documentId) =>
             S.document()
               .documentId(documentId)
               .schemaType("project")
@@ -69,7 +61,7 @@ const webriq = S.list()
                   .component(SeoPreview)
                   .options({ previewURL })
                   .icon(EyeIcon)
-                  .title("SEO Preview")
+                  .title("SEO Preview"),
               ])
           )
       ),
@@ -79,7 +71,7 @@ const webriq = S.list()
       .child(
         S.documentTypeList("post")
           .title("Blog posts")
-          .child(documentId =>
+          .child((documentId) =>
             S.document()
               .documentId(documentId)
               .schemaType("post")
@@ -94,7 +86,7 @@ const webriq = S.list()
                   .component(SeoPreview)
                   .options({ previewURL })
                   .icon(EyeIcon)
-                  .title("SEO Preview")
+                  .title("SEO Preview"),
               ])
           )
       ),
@@ -106,22 +98,12 @@ const webriq = S.list()
           .items([
             S.listItem()
               .title("About")
-              .child(
-                S.editor()
-                  .id("aboutPage")
-                  .schemaType("page")
-                  .documentId("about")
-              )
+              .child(S.editor().id("aboutPage").schemaType("page").documentId("about"))
               .icon(FaFile),
             S.listItem()
               .title("Contact")
-              .child(
-                S.editor()
-                  .id("contactPage")
-                  .schemaType("page")
-                  .documentId("contact")
-              )
-              .icon(FaFile)
+              .child(S.editor().id("contactPage").schemaType("page").documentId("contact"))
+              .icon(FaFile),
           ])
       ),
     S.listItem()
@@ -132,15 +114,15 @@ const webriq = S.list()
       .title("Categories")
       .schemaType("category")
       .child(S.documentTypeList("category").title("Categories")),
-    ...S.documentTypeListItems().filter(listItem => !hiddenTypes.includes(listItem.getId()))
+    ...S.documentTypeListItems().filter((listItem) => !hiddenTypes.includes(listItem.getId())),
   ]);
 
 const locations = {
-  webriq
+  webriq,
 };
 let last = "";
 // Send a message to the parent
-var sendMessage = function(msg) {
+var sendMessage = function (msg) {
   // // console.log(msg);
   // console.log(JSON.stringify(msg));
   // Make sure you are sending a string, and to stringify JSON
@@ -154,7 +136,7 @@ export default () => {
 
       sendMessage({
         origin: "sanityStudio",
-        currentPath: location.pathname
+        currentPath: location.pathname,
       });
 
       window.currentStudioLocation = location;

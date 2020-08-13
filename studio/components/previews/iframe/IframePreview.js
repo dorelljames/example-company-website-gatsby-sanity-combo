@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styles from "./IframePreview.css";
 
 const assembleProjectUrl = ({ displayed, options }) => {
-  const { slug } = displayed;
+  const { slug, _type } = displayed;
   console.log("assembleProjectUrl -> displayed", displayed);
   const { previewURL } = options;
   console.log("assembleProjectUrl -> previewURL", previewURL);
@@ -14,18 +14,20 @@ const assembleProjectUrl = ({ displayed, options }) => {
     return "";
   }
 
-  console.log(`${previewURL}/project/${slug.current}`);
+  console.log(`${previewURL}/${_type}/${slug.current}`);
 
-  return `${previewURL}/project/${slug.current}`;
+  const type = _type === "post" ? "blog" : _type;
+
+  return `${previewURL}/${type}/${slug.current}`;
 };
 
 class IframePreview extends React.PureComponent {
   static propTypes = {
-    document: PropTypes.object // eslint-disable-line react/forbid-prop-types
+    document: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   };
 
   static defaultProps = {
-    document: null
+    document: null,
   };
 
   render() {
